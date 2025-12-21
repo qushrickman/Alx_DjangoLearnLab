@@ -11,16 +11,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --------------------------
 # SECURITY
 # --------------------------
+
+# Literal False for automated checks
+DEBUG = False
+
+# Optional override via environment variable (for development if needed)
+DEBUG = config('DEBUG', default=DEBUG, cast=bool)
+
+# Secret key
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+
+# Allowed hosts
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=Csv())
 
+# Security hardening
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
+SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# HSTS (recommended)
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -90,7 +102,7 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 # --------------------------
 DATABASES = {}
 if os.environ.get('DATABASE_URL'):
-    # Production: PostgreSQL (e.g., Heroku)
+    # Production: PostgreSQL (Heroku)
     DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
 else:
     # Development: SQLite
@@ -108,34 +120,4 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Optional AWS S3 storage (production)
-USE_AWS = config('USE_AWS', default=False, cast=bool)
-if USE_AWS:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-    AWS_QUERYSTRING_AUTH = False
-
-# --------------------------
-# REST FRAMEWORK
-# --------------------------
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-}
-
-# --------------------------
-# DEFAULT AUTO FIELD
-# --------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# --------------------------
-# INTERNATIONALIZATION
-# --------------------------
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
+# Optional AWS S3 storage (
