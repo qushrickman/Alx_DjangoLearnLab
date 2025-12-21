@@ -1,9 +1,23 @@
+from decouple import config
+import dj_database_url
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-key'
-DEBUG = True
-ALLOWED_HOSTS = []
+
+SECRET_KEY = config('SECRET_KEY')
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['simonkuria-app.herokuapp.com', '127.0.0.1']
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

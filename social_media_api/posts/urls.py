@@ -1,6 +1,6 @@
 from importlib.resources import path
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet, unlike_post, like_post
+from .views import PostViewSet, CommentViewSet, unlike_post
 
 from django.urls import path
 from .views import like_post
